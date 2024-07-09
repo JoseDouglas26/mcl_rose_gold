@@ -121,13 +121,36 @@ minetest.register_tool(":mcl_farming:hoe_rose_gold", {
     wield_scale = mcl_vars.tool_wield_scale
 })
 
-for id, defs in pairs(minetest.registered_tools) do
-    if id:find("_gold") and defs.description:find("Golden") then
+mcl_armor.register_set({
+	name = "rose_gold",
+	descriptions = {
+		head = S("Rose Gold Helmet"),
+		torso = S("Rose Gold Chestplate"),
+		legs = S("Rose Gold Leggings"),
+		feet = S("Rose Gold Boots"),
+	},
+	durability = 352,
+	enchantability = 25,
+	points = {
+		head = 2,
+		torso = 6,
+		legs = 5,
+		feet = 2,
+	},
+	craft_material = "mcl_core:rose_gold_ingot",
+	sound_equip = "mcl_armor_equip_iron",
+	sound_unequip = "mcl_armor_unequip_iron",
+})
+
+for id, defs in pairs(minetest.registered_items) do
+    if (id:find("_gold") and defs.description:find("Golden")) and
+    (minetest.get_item_group(id, "armor") > 0 or minetest.get_item_group(id, "tool") > 0 ) then
         minetest.override_item(id, {
+            _tt_help = "",
             _mcl_upgradable = true,
             _mcl_upgrade_item = id:gsub("_gold", "_rose_gold"),
-            _no_template_needed = true,
-            _upgrade_with = "mcl_core:rose_gold_ingot"
+            _mcl_no_template_needed = true,
+            _mcl_upgrade_with = "mcl_core:rose_gold_ingot"
         })
     end
 end
